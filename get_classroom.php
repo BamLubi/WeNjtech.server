@@ -2,8 +2,8 @@
     require_once "./config.php";
 
     // 1. 获取参数
-    $username = "1405170121";
-    $password = "1999819lyy";
+    $username = "学号XXX";
+    $password = "密码XXX";
     log_file(basename(__FILE__), __LINE__, "INIT params: ".$username." ".$password);
 
     // 2. 配置查询参数

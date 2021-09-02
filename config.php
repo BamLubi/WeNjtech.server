@@ -4,7 +4,7 @@
     ignore_user_abort(true);// 设置浏览器关闭继续运行
 
     /** 日志设置 */
-    $log = "/www/wwwroot/develop/weNjtech/logs/php.log";
+    $log = "日志文件路径";
     function log_file($file, $line, $content) {
         global $log;
         error_log(date("Y-m-d H:i:s", time()) . " - " . $file . "[line:" . $line . '] - ' . $content . "\n", 3, $log);
@@ -29,7 +29,7 @@
 
     /** 执行python程序 */
     function exec_python($path){
-        $output = exec('export LANG=en_US.UTF-8;'.'python3 /www/wwwroot/develop/weNjtech/'.$path);
+        $output = exec('export LANG=en_US.UTF-8;'.'python3 项目文件目录'.$path);
         return $output;
     }
 ?>

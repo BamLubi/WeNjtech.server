@@ -1,2 +1,1 @@
-cd /www/wwwroot/develop/weNjtech
-php -q get_classroom.php
+php -q 工作目录/get_classroom.php

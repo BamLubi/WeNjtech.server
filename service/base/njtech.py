@@ -12,7 +12,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from .config import Config
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='日志文件路径', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 chrome_options = Options()
 chrome_options.add_argument('--headless')
@@ -88,7 +88,7 @@ class Njtech:
         finally:
             self.browser.close()
 
-    def get_kebiao(self):
+    def get_kebiao(self, year, term):
         # 判断是否登录
         if not self.check_login():
             logging.info("查询课表:未登录")
@@ -96,8 +96,8 @@ class Njtech:
         # 获取课表
         try:
             data = {
-                'xnm': '2018',
-                'xqm': '3',
+                'xnm': str(year),
+                'xqm': str(term),
                 'kzlx': 'ck'
             }
             response = self.get_request('POST', self.config.kebiao_url, data)
@@ -146,9 +146,3 @@ class Njtech:
         """
         response = requests.request(method, url, data=data, headers=self.header, cookies=self.cookies)
         return json.loads(response.content.decode('utf-8'))
-
-
-if __name__ == '__main__':
-    njtech = Njtech("1405170121", "1999819lyy")
-    # print(njtech.check_login())
-    # njtech.get_kebiao()

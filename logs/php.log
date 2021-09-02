@@ -1,6 +1,18 @@
-2021-08-30 22:16:10 - get_classroom.php[line:7] - INIT params: 1405170121 1999819lyy
-2021-08-30 22:16:10 - get_classroom.php[line:38] - 学年:2021 学期:3 周次:1024 星期:1
-2021-08-30 22:29:07 - get_classroom.php[line:7] - INIT params: 1405170121 1999819lyy
-2021-08-30 22:29:07 - get_classroom.php[line:38] - 学年:2021 学期:3 周次:1024 星期:1
-2021-08-30 22:32:55 - get_classroom.php[line:7] - INIT params: 1405170121 1999819lyy
-2021-08-30 22:32:55 - get_classroom.php[line:38] - 学年:2021 学期:3 周次:1024 星期:1
+2021-09-01 14:15:17 - get_kebiao.php[line:8] - POST params: 1405170121 1999819lyy odufi5LQnaBGOAPIlWRIrOWtFvLM
+2021-09-01 14:15:17 - get_kebiao.php[line:34] - 执行python文件
+2021-09-01 19:53:09 - get_kebiao.php[line:8] - POST params: 201921147180 851219jin@ odufi5IaLEGzldD6U8M6pZZfshHs
+2021-09-01 19:53:09 - get_kebiao.php[line:34] - 执行python文件
+2021-09-01 20:52:30 - get_kebiao.php[line:8] - POST params: 201921147180 851219jin@ odufi5DvQyKw9TuvvSj9_TQ_Npy4
+2021-09-01 20:52:30 - get_kebiao.php[line:34] - 执行python文件
+2021-09-01 22:00:41 - get_kebiao.php[line:8] - POST params: 1405170121 1999819lyy odufi5LQnaBGOAPIlWRIrOWtFvLM
+2021-09-01 22:00:41 - get_kebiao.php[line:34] - 执行python文件
+2021-09-01 22:01:45 - get_kebiao.php[line:8] - POST params: 1405170121 1999819lyy odufi5LQnaBGOAPIlWRIrOWtFvLM
+2021-09-01 22:01:45 - get_kebiao.php[line:34] - 执行python文件
+2021-09-01 22:02:58 - get_kebiao.php[line:8] - POST params: 1405170121 1999819lyy odufi5LQnaBGOAPIlWRIrOWtFvLM
+2021-09-01 22:02:58 - get_kebiao.php[line:34] - 执行python文件
+2021-09-01 23:28:57 - get_kebiao.php[line:8] - POST params: 201921147180 851219jin@ odufi5IaLEGzldD6U8M6pZZfshHs
+2021-09-01 23:28:57 - get_kebiao.php[line:34] - 执行python文件
+2021-09-02 06:00:01 - get_classroom.php[line:7] - INIT params: 1405170121 1999819lyy
+2021-09-02 06:00:01 - get_classroom.php[line:38] - 学年:2021 学期:3 周次:1024 星期:4
+2021-09-02 09:00:08 - get_kebiao.php[line:8] - POST params: 201921147181 lyx19950814 odufi5M0ropD8plrKVBfU9vTYjOo
+2021-09-02 09:00:08 - get_kebiao.php[line:34] - 执行python文件

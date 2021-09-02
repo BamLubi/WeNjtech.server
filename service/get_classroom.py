@@ -10,12 +10,13 @@ import subprocess
 import time
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='日志文件路径', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 # 定义当前日期 如'20200504'
 now_date = str(datetime.datetime.now().strftime('%Y%m%d'))
 # 处理后的数据
-final_classroomm_file = '/www/wwwroot/develop/weNjtech/static/classroom/' + now_date + '.json'
+file_name = now_date + '.json'
+file_path = '空教室文件存储路径' + file_name
 # 云端存储数据的集合名
 collection_name = 'weNjtech-classroom'
 
@@ -42,7 +43,6 @@ class Classroom:
         self.njtech = Njtech(username, password)
     
     def get_classroom(self):
-        # for item in [3]:
         for item in self.time:
             logging.info("获取节次"+str(item))
             response = self.njtech.get_classroom(self.year, self.term, self.term_week, self.week, item)
@@ -140,7 +140,7 @@ class Classroom:
         空教室写入文件
         """
         try:
-            with open(final_classroomm_file, "w", encoding="utf-8") as f:
+            with open(file_path, "w", encoding="utf-8") as f:
                 for item in self.classroomList:
                     f.write(json.dumps(item, ensure_ascii=False) + '\n')
         except IOError as e:
@@ -175,11 +175,11 @@ if __name__ == '__main__':
         if len(classroom.classroomList) == 0:
             logging.info("数据长度为0! 休眠后重新执行...")
             time.sleep(300)
-            subprocess.call("/www/wwwroot/develop/weNjtech/shell/autorun_classroom.sh", shell=True)
+            subprocess.call("../shell/autorun_classroom.sh", shell=True)
             exit()
         # 7. 保存至小程序云数据库
         logging.info("Saving to wechat miniprogram cloud database...")
-        if not WechatApp(final_classroomm_file, collection_name, len(classroom.classroomList)).upload_classroom(now_date):
+        if not WechatApp(file_path, collection_name).upload_classroom(file_name, len(classroom.classroomList)):
             raise Exception("保存至小程序云数据库错误")
         # 8. 返回信息
         print(R.OK('success', '查询课表成功'))

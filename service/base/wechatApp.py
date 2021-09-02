@@ -4,18 +4,18 @@ import datetime
 import logging
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='日志文件路径', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
 
 class WechatApp:
-    def __init__(self, filename, collectionname, count):
+    def __init__(self, filename, collectionname):
         # 初始化变量
         self.grant_type = 'client_credential'
-        self.appid = 'wxe314f48b689deaf6'
-        self.secret = '03d65f702b6b0262346250d0b345565b'
-        self.env = 'lyy-production'
-        self.empty_classroom_file = filename
+        self.appid = '小程序APPID'
+        self.secret = '小程序SECRET'
+        self.env = '小程序云环境ID'
+        self.src_file = filename
         self.collectionname = collectionname
         self.access_token = ''
         self.header = {
@@ -30,7 +30,6 @@ class WechatApp:
             'add_collection': ['POST', 'https://api.weixin.qq.com/tcb/databasecollectionadd?access_token={}'],
             'update_database': ['POST', 'https://api.weixin.qq.com/tcb/databaseupdate?access_token={}'],
         }
-        self.count = count
         self.finish_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     def get_request(self, method, url, data):
@@ -211,35 +210,53 @@ class WechatApp:
         if self.access_token == '':
             return self.get_access_token()
 
-    def upload_classroom(self, date):
+    def upload_classroom(self, file_name, count):
         """
-        启动函数
-        :param date: 当前的日期
+        上传空教室
+        :param file_name: 文件名
         :return:
         """
         # 1. 确保有access_token，时效2小时
         self.check_environment()
         # 2. 上传文件，获取cloudid
-        path = 'weNjtech/classroom/' + date + '.json'
-        if not self.upload_file(self.empty_classroom_file, path):
+        file_path = 'weNjtech/classroom/' + file_name
+        if not self.upload_file(self.src_file, file_path):
             return False
         # 3. 删除云端集合
         if not self.del_collection():
             return False
-        # 4. 修改公共字典，锁
-        query_str = "db.collection(\"weNjtech-publicDict\").doc(\"dict003\").update({data: {isAvailable: false, notice: \"数据维护中\"}})"
+        # 4. 修改公共字典，锁，根据情况自己设计
+        query_str = "db.collection(\"publicDict\").doc(\"dict003\").update({data: {isAvailable: false, notice: \"数据维护中\"}})"
         if not self.update_database(query_str):
             return False
         # 5. 新增云端集合
         if not self.add_collection():
             return False
         # 6. 数据导入集合
-        if not self.db_import(path):
+        if not self.db_import(file_path):
             return False
-        # 7. 修改公共字典，释放锁
-        query_str = "db.collection(\"weNjtech-publicDict\").doc(\"dict003\").update({data: {isAvailable: true, count:" + str(
-            self.count) + ",time:\"" + self.finish_time + "\"}})"
+        # 7. 修改公共字典，释放锁，根据情况自己设计
+        query_str = "db.collection(\"publicDict\").doc(\"dict003\").update({data: {isAvailable: true, count:" + str(
+            count) + ",time:\"" + self.finish_time + "\"}})"
         if not self.update_database(query_str):
+            return False
+        # 8. 处理成功,返回
+        return True
+    
+    def upload_kebiao(self, file_name):
+        """
+        上传课表
+        :param date: 当前的日期
+        :return:
+        """
+        # 1. 确保有access_token，时效2小时
+        self.check_environment()
+        # 2. 上传文件，获取cloudid
+        file_path = 'weNjtech/kebiao/' + file_name
+        if not self.upload_file(self.src_file, file_path):
+            return False
+        # 6. 数据导入集合
+        if not self.db_import(file_path):
             return False
         # 8. 处理成功,返回
         return True
