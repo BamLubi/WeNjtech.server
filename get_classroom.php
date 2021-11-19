@@ -2,8 +2,8 @@
     require_once "./config.php";
 
     // 1. 获取参数
-    $username = "学号XXX";
-    $password = "密码XXX";
+    $username = "1405170121";
+    $password = "1999819lyy";
     log_file(basename(__FILE__), __LINE__, "INIT params: ".$username." ".$password);
 
     // 2. 配置查询参数
@@ -47,6 +47,7 @@
 
     // 4. 查询空教室，全部交由python
     // 由python获取每次数据，并且拼接和筛选，并保存在本地和上传小程序
+    log_file(basename(__FILE__), __LINE__, "跳转Python文件获取空教室");
     $output = exec_python("service/get_classroom.py ".$username." ".$password." ".$query_year." ".$query_term." ".$query_term_week." ".$query_week);
 
     echo $output;

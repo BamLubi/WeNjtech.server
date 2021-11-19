@@ -9,7 +9,7 @@ import re
 import time
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='日志文件路径', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 # 云端存储数据的集合名
 collection_name = 'weNjtech-kebiao'
@@ -109,7 +109,7 @@ if __name__ == '__main__':
         # query_year = '2018'
         # query_term = '3'
         file_name = str(username) + '-' + str(query_year) + '-' + str(query_term) + '.json'
-        file_path = '获取的课表存储路径' + file_name
+        file_path = '/www/wwwroot/develop/weNjtech/static/kebiao/' + file_name
         logging.info("username: "+username+", password: "+password+", query_year: "+query_year+", query_term: "+query_term)
         # 2. 初始化查询课表对象
         kebiao = Kebiao(username, password, query_year, query_term)

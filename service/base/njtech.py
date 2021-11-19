@@ -12,19 +12,17 @@ from selenium.webdriver.support.wait import WebDriverWait
 from .config import Config
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='日志文件路径', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 chrome_options = Options()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--blink-settings=imagesEnabled=false')
 
 r = redis.Redis(host='127.0.0.1', port=6379, decode_responses=True)
 
 class Njtech:
     def __init__(self, username, password):
-        # 设置 selenium 浏览器
-        # self.browser = webdriver.Chrome(options=chrome_options)
-        # self.wait = WebDriverWait(self.browser, 5)
         # 设置用户名和密码
         self.username = username
         self.password = password
@@ -74,11 +72,12 @@ class Njtech:
             button.click()
             self.wait.until(EC.presence_of_element_located((By.ID, 'area_five')))
             self.cookies = {
-                'JSESSIONID': self.browser.get_cookies()[0].get('value')
+                'JSESSIONID': self.browser.get_cookies()[0].get('value'),
+                'QINGCLOUDELB': self.browser.get_cookies()[1].get('value')
             }
             self.isLogin = True
-            r.set(self.username, json.dumps(self.cookies), ex=600*2)
-            logging.info("登录成功,写入Redis: "+json.dumps(self.cookies))
+            r.set(self.username, json.dumps(self.cookies), ex=60*10)
+            logging.info("登录成功,写入Redis: " + json.dumps(self.cookies))
         except Exception as e:
             if self.tryTimes < 1:
                 self.tryTimes += 1
@@ -134,7 +133,7 @@ class Njtech:
             response = self.get_request('POST', self.config.classroom_url, data)
             return response
         except Exception as e:
-            logging.error("获取空教室失败",e)
+            logging.error("获取空教室失败", e)
 
     def get_request(self, method, url, data):
         """
@@ -144,5 +143,7 @@ class Njtech:
         :param data: 附带参数
         :return:
         """
+        # logging.info("Request: "+method+" "+url+" "+str(data))
         response = requests.request(method, url, data=data, headers=self.header, cookies=self.cookies)
+        response.encoding = "utf-8"
         return json.loads(response.content.decode('utf-8'))

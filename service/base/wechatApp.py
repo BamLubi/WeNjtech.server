@@ -3,8 +3,10 @@ import requests
 import datetime
 import logging
 
+from .config import Config
+
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='日志文件路径', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 
 
@@ -12,9 +14,9 @@ class WechatApp:
     def __init__(self, filename, collectionname):
         # 初始化变量
         self.grant_type = 'client_credential'
-        self.appid = '小程序APPID'
-        self.secret = '小程序SECRET'
-        self.env = '小程序云环境ID'
+        self.appid = Config().APPID
+        self.secret = Config().SECRET
+        self.env = Config().ENV
         self.src_file = filename
         self.collectionname = collectionname
         self.access_token = ''
@@ -225,21 +227,21 @@ class WechatApp:
         # 3. 删除云端集合
         if not self.del_collection():
             return False
-        # 4. 修改公共字典，锁，根据情况自己设计
-        query_str = "db.collection(\"publicDict\").doc(\"dict003\").update({data: {isAvailable: false, notice: \"数据维护中\"}})"
-        if not self.update_database(query_str):
-            return False
+        # 4. 修改公共字典，锁.(根据自身情况，是否设置一个锁，当锁定时，小程序端显示正在维护中)
+        # query_str = "db.collection(\"weNjtech-publicDict\").doc(\"dict003\").update({data: {isAvailable: false, notice: \"数据维护中\"}})"
+        # if not self.update_database(query_str):
+        #     return False
         # 5. 新增云端集合
         if not self.add_collection():
             return False
         # 6. 数据导入集合
         if not self.db_import(file_path):
             return False
-        # 7. 修改公共字典，释放锁，根据情况自己设计
-        query_str = "db.collection(\"publicDict\").doc(\"dict003\").update({data: {isAvailable: true, count:" + str(
-            count) + ",time:\"" + self.finish_time + "\"}})"
-        if not self.update_database(query_str):
-            return False
+        # 7. 修改公共字典，释放锁
+        # query_str = "db.collection(\"weNjtech-publicDict\").doc(\"dict003\").update({data: {isAvailable: true, count:" + str(
+        #     count) + ",time:\"" + self.finish_time + "\"}})"
+        # if not self.update_database(query_str):
+        #     return False
         # 8. 处理成功,返回
         return True
     
