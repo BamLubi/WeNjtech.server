@@ -1,4 +1,5 @@
 logs/
 *.pyc
 chromedriver.exe
-service/login.py
+
+./service/login.py
