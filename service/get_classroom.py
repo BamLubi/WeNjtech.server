@@ -10,15 +10,15 @@ import subprocess
 import time
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='../logs/python.log', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 # 定义当前日期 如'20200504'
 now_date = str(datetime.datetime.now().strftime('%Y%m%d'))
 # 处理后的数据
 file_name = now_date + '.json'
-file_path = '/www/wwwroot/develop/weNjtech/static/classroom/' + file_name
+file_path = '../static/classroom/' + file_name
 # 云端存储数据的集合名
-collection_name = 'weNjtech-classroom'
+collection_name = 'WEAPP-COLLECTION_NAME'
 
 class Classroom:
     def __init__(self, username, password, year, term, term_week, week):
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         if len(classroom.classroomList) == 0:
             logging.info("数据长度为0! 休眠后重新执行...")
             time.sleep(300)
-            subprocess.call("/www/wwwroot/develop/weNjtech/shell/autorun_classroom.sh", shell=True)
+            subprocess.call("../shell/autorun_classroom.sh", shell=True)
             exit()
         # 7. 保存至小程序云数据库
         logging.info("Saving to wechat miniprogram cloud database...")

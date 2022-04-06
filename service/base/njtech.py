@@ -12,7 +12,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from .config import Config
 
 # 设置日志属性
-logging.basicConfig(level=logging.INFO, filename='/www/wwwroot/develop/weNjtech/logs/python.log', filemode='a',
+logging.basicConfig(level=logging.INFO, filename='../../logs/python.log', filemode='a',
                         format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
 chrome_options = Options()
 chrome_options.add_argument('--headless')
@@ -71,17 +71,20 @@ class Njtech:
             button = self.browser.find_element_by_id('dl')
             button.click()
             self.wait.until(EC.presence_of_element_located((By.ID, 'area_five')))
+            # self.browser.implicitly_wait(60)
             self.cookies = {
                 'JSESSIONID': self.browser.get_cookies()[0].get('value'),
                 'QINGCLOUDELB': self.browser.get_cookies()[1].get('value')
             }
+            logging.info(str(self.cookies))
             self.isLogin = True
-            r.set(self.username, json.dumps(self.cookies), ex=60*10)
+            r.set(self.username, json.dumps(self.cookies), ex=60*5)
             logging.info("登录成功,写入Redis: " + json.dumps(self.cookies))
         except Exception as e:
-            if self.tryTimes < 1:
+            if self.tryTimes < 3:
                 self.tryTimes += 1
-                logging.info("第一次登录失败,尝试重新登录")
+                logging.info("第" + str(self.tryTimes) + "次登录失败,尝试重新登录")
+                self.browser.close()
                 return self.login()
             print("登录失败")
         finally:
@@ -133,7 +136,7 @@ class Njtech:
             response = self.get_request('POST', self.config.classroom_url, data)
             return response
         except Exception as e:
-            logging.error("获取空教室失败", e)
+            logging.error("获取空教室失败",e)
 
     def get_request(self, method, url, data):
         """
@@ -143,7 +146,6 @@ class Njtech:
         :param data: 附带参数
         :return:
         """
-        # logging.info("Request: "+method+" "+url+" "+str(data))
         response = requests.request(method, url, data=data, headers=self.header, cookies=self.cookies)
-        response.encoding = "utf-8"
-        return json.loads(response.content.decode('utf-8'))
+        return json.loads(response.content.decode(encoding='utf-8', errors='ignore'))
+    

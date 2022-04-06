@@ -1,0 +1,6 @@
+redis
+selenium
+logging
+subprocess
+re
+requests
